@@ -6,14 +6,14 @@ import { HousingLocation } from '../housinglocation';
   selector: 'app-housing-location',
   template: `
      <section class="listing">
-    <img class="listing-photo" [src]="housingLocation.photo" alt="Exterior photo of {{housingLocation.name}}">
-    <h2 class="listing-heading">{{ housingLocation.name }}</h2>
-    <p class="listing-location">{{ housingLocation.city}}, {{housingLocation.state }}</p>
-    <a [routerLink]="['/details', housingLocation.id]">Learn More</a>
+    <img class="listing-photo" [src]="housingLocationComponent.photo" alt="Exterior photo of {{housingLocationComponent.name}}">
+    <h2 class="listing-heading">{{ housingLocationComponent.name }}</h2>
+    <p class="listing-location">{{ housingLocationComponent.city}}, {{housingLocationComponent.state }}</p>
+    <a [routerLink]="['/details', housingLocationComponent.id]">Learn More</a>
   </section>
   `,
   styleUrls: ['./housing-location.component.css']
 })
 export class HousingLocationComponent {
-  @Input() housingLocation!: HousingLocation;
+  @Input() housingLocationComponent!: HousingLocation;
 }

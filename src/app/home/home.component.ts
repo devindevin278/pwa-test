@@ -8,14 +8,17 @@ import { HousingService } from '../housing.service';
   template: `
     <section>
     <form>
-      <input type="text" placeholder="Filter by city">
-      <button class="btn btn-primary" type="button">Search</button>
+      <input type="text" placeholder="Filter by city" #filter>
+      <button class="btn btn-primary" type="button" (click)="filterResults(filter.value)">Search</button>
     </form>
   </section>
   <section class="results">
+  <div class="mx-auto" *ngIf="filteredLocationList.length == 0">
+    <h1> "{{ filter.value }}" Not Found</h1>
+  </div>
   <app-housing-location
-  *ngFor="let housingLocation of housingLocationList"
-  [housingLocation]="housingLocation">
+  *ngFor="let housingLocationItem of filteredLocationList"
+  [housingLocationComponent]="housingLocationItem">
 </app-housing-location>
   </section>
   `,
@@ -24,10 +27,26 @@ import { HousingService } from '../housing.service';
 export class HomeComponent {
 
   housingLocationList: HousingLocation[] = [];
+  filteredLocationList: HousingLocation[] = [];
+
   housingService: HousingService = inject(HousingService);
 
   constructor() {
-    this.housingLocationList = this.housingService.getAllHousingLocations();
+    this.housingService.getAllHousingLocations().then((housingLocationListparam: HousingLocation[]) => {
+      this.housingLocationList = housingLocationListparam;
+      this.filteredLocationList = housingLocationListparam;
+    });
+  }
+
+  filterResults(text: string) {
+    if (!text) {
+      this.filteredLocationList = this.housingLocationList;
+      return;
+    }
+
+    this.filteredLocationList = this.housingLocationList.filter(
+      housingLocation => housingLocation?.city.toLowerCase().includes(text.toLowerCase())
+    );
   }
 
 }
